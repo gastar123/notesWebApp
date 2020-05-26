@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<h1>Notes</h1>
+<h2>
+    <a href="add">Add note</a>
+</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <td>id</td>
+        <td>Tags</td>
+        <td>Title</td>
+        <td>Text</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="note : ${notes}">
+        <td th:text="${note.id}">
+        <td th:text="${#strings.listJoin(note.tagList, ', ')}">
+        <td th:text="${note.title}">
+        <td th:text="${note.text}">
+        <td>
+            <a th:href="@{'/deleteNote/{id}'(id=${note.id})}">delete</a>
+        </td>
+        <td>
+            <a th:href="@{'/edit/{id}'(id=${note.id})}">edit</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

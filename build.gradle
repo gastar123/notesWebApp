@@ -1,0 +1,29 @@
+plugins {
+	id 'org.springframework.boot' version '2.2.0.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+	id 'java'
+}
+
+group = 'com.xe72'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+//	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.17'
+	implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.12'
+//	implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.5.0'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+}
+
+test {
+	useJUnitPlatform()
+}
