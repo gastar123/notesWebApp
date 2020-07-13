@@ -11,12 +11,13 @@
 </head>
 <body>
 Add note
-<form action="/addNote" method="post" style="width:70%; margin:auto">
-    <p><textarea placeholder="tags" name="tag" class="form-control" th:text="${#strings.listJoin(note.tagList, ', ')}"></textarea></p>
-    <p><textarea required placeholder="title" name="title" class="form-control" th:text="${note.title}"></textarea></p>
-    <p><textarea placeholder="text" name="text" class="form-control" th:text="${note.text}"></textarea></p>
+<form action="#" th:action="@{/add}" th:object="${note}" method="post" style="width:70%; margin:auto">
+    <p><textarea placeholder="tags" name="tag" class="form-control" th:field="*{tagList}"></textarea></p>
+    <p><textarea placeholder="title" name="title" class="form-control" th:field="*{title}"></textarea></p>
+    <p><textarea placeholder="text" name="text" class="form-control" th:field="*{text}"></textarea></p>
+    <p class="form-control" th:if="${#fields.hasErrors('text')}" th:errors="*{text}">Error text field</p>
     <p><input type="submit" class="btn btn-primary"></p>
-    <p><input type="hidden" name="id" th:value="${note.id}"></p>
+    <p><input type="hidden" name="id" th:field="*{id}"></p>
 </form>
 </body>
 </html>

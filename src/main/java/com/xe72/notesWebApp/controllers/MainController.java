@@ -3,12 +3,14 @@ package com.xe72.notesWebApp.controllers;
 import com.xe72.notesWebApp.entities.Note;
 import com.xe72.notesWebApp.services.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -30,16 +32,18 @@ public class MainController {
     }
 
     @GetMapping("/add")
-    public String addNotePage(Model model) {
-        Note note = new Note();
-        model.addAttribute("note", note);
+    public String addNotePage(Note note) {
         return "add";
     }
 
-    @PostMapping("/addNote")
-    public String addNoteOnServer(@RequestParam String tag, @RequestParam String title, @RequestParam String text, @Nullable @RequestParam Long id) {
-        noteService.addNote(tag, title, text, id);
-        return "redirect:/";
+    @PostMapping("/add")
+    public String addNoteOnServer(@Valid Note note, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "add";
+        } else {
+            noteService.addNote(note);
+            return "redirect:/";
+        }
     }
 
     @GetMapping("/deleteNote/{id}")

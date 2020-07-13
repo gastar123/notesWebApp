@@ -15,10 +15,12 @@ public class Note {
     private String title;
     @NotEmpty(message = "OSHIBKA")
     private String text;
-    private Date create_date;
-    private Date modify_date;
+    @Column(name = "create_date")
+    private Date createDate;
+    @Column(name = "modify_date")
+    private Date modifyDate;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinTable(name = "note_tag",
             joinColumns = {@JoinColumn(name = "note_id")},
             inverseJoinColumns = {@JoinColumn(name = "tag_name")}
@@ -57,19 +59,19 @@ public class Note {
         this.text = text;
     }
 
-    public Date getCreate_date() {
-        return create_date;
+    public Date getCreateDate() {
+        return createDate;
     }
 
-    public void setCreate_date(Date create_date) {
-        this.create_date = create_date;
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
-    public Date getModify_date() {
-        return modify_date;
+    public Date getModifyDate() {
+        return modifyDate;
     }
 
-    public void setModify_date(Date modify_date) {
-        this.modify_date = modify_date;
+    public void setModifyDate(Date modifyDate) {
+        this.modifyDate = modifyDate;
     }
 }
