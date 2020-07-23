@@ -12,19 +12,10 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 @SpringBootApplication
-public class NotesWebAppApplication implements WebMvcConfigurer {
+public class NotesWebAppApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(NotesWebAppApplication.class, args);
 	}
 
-	@Override
-	public void addFormatters(FormatterRegistry registry) {
-		registry.addPrinter(new Printer<List<Tag>>() {
-            @Override
-            public String print(List<Tag> object, Locale locale) {
-                return object.stream().map(Object::toString).collect(Collectors.joining(", "));
-            }
-        });
-	}
 }

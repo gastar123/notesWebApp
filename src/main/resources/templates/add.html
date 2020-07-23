@@ -11,13 +11,32 @@
 </head>
 <body>
 Add note
-<form action="#" th:action="@{/add}" th:object="${note}" method="post" style="width:70%; margin:auto">
-    <p><textarea placeholder="tags" name="tag" class="form-control" th:field="*{tagList}"></textarea></p>
-    <p><textarea placeholder="title" name="title" class="form-control" th:field="*{title}"></textarea></p>
-    <p><textarea placeholder="text" name="text" class="form-control" th:field="*{text}"></textarea></p>
-    <p class="form-control" th:if="${#fields.hasErrors('text')}" th:errors="*{text}">Error text field</p>
+<form action="#" th:action="@{/add}" th:object="${note}" method="post" style="width:70%; margin:auto"
+      class="needs-validation" novalidate>
+    <div class="mb-3">
+        <textarea placeholder="tags" name="tag" class="form-control"
+                  th:classappend="${#fields.hasErrors('tagList')}? 'is-invalid'" th:field="*{tagList}"></textarea>
+        <div class="invalid-feedback" th:if="${#fields.hasErrors('tagList')}" th:errors="*{tagList}">
+            Error tags field
+        </div>
+    </div>
+    <div class="mb-3">
+        <textarea placeholder="title" name="title" class="form-control"
+                  th:classappend="${#fields.hasErrors('title')}? 'is-invalid'" th:field="*{title}"></textarea>
+        <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">
+            Error title field
+        </div>
+    </div>
+    <div class="mb-3">
+        <textarea placeholder="text" name="text" class="form-control"
+                  th:classappend="${#fields.hasErrors('text')}? 'is-invalid'" th:field="*{text}"></textarea>
+        <div class="invalid-feedback" th:if="${#fields.hasErrors('text')}" th:errors="*{text}">
+            Error text field
+        </div>
+    </div>
     <p><input type="submit" class="btn btn-primary"></p>
     <p><input type="hidden" name="id" th:field="*{id}"></p>
 </form>
+<a href="/">back</a>
 </body>
 </html>

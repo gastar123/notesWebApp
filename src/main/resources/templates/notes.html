@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -10,6 +10,7 @@
 
 </head>
 <body>
+<span sec:authentication="name">Unauthorized</span>
 <h1>Notes</h1>
 <h2>
     <a href="add">Add note</a>
@@ -34,6 +35,17 @@
         </td>
         <td>
             <a th:href="@{'/edit/{id}'(id=${note.id})}">edit</a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a th:href="@{/login}">Login</a>
+        </td>
+        <td>
+            <a th:href="@{/logout}" sec:authorize="isAuthenticated()">Logout</a>
+        </td>
+        <td>
+            <a th:href="@{/admin}">Admin console</a>
         </td>
     </tr>
     </tbody>
