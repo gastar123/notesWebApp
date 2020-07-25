@@ -10,7 +10,7 @@
         <div th:text="${note.text}" class="card-body"></div>
         <div class="card-footer">
             <a th:href="@{'/note/{id}/edit'(id=${note.id})}" class="btn btn-primary">edit</a>
-                <a th:href="@{'/note/{id}/delete'(id=${note.id})}" class="float-right btn">delete</a>
+            <a th:href="@{'/note/{id}/delete'(id=${note.id})}" class="float-right btn">delete</a>
         </div>
     </div>
 </div>

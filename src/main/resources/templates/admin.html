@@ -17,7 +17,7 @@
         <td th:text="${user.id}">
         <td th:text="${user.username}">
         <td>
-            <a th:href="@{'/deleteUser/{id}'(id=${user.id})}">delete</a>
+            <a th:href="@{'/admin/deleteUser/{id}'(id=${user.id})}">delete</a>
         </td>
     </tr>
     </tbody>

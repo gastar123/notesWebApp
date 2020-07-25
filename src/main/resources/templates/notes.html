@@ -6,7 +6,7 @@
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
 <div class="container">
-    <form class="input-group my-2 mr-auto">
+    <form class="input-group my-2">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn my-2 my-sm-0" type="submit">Search</button>
     </form>
@@ -18,45 +18,5 @@
         <div th:text="${note.text}" class="card-body"></div>
     </div>
 </div>
-<!--<span sec:authentication="name">Unauthorized</span>-->
-<!--<h1>Notes</h1>-->
-<!--<h2>-->
-<!--    <a href="add">Add note</a>-->
-<!--</h2>-->
-<!--<table class="table table-hover">-->
-<!--    <thead>-->
-<!--    <tr>-->
-<!--        <td>id</td>-->
-<!--        <td>Tags</td>-->
-<!--        <td>Title</td>-->
-<!--        <td>Text</td>-->
-<!--    </tr>-->
-<!--    </thead>-->
-<!--    <tbody>-->
-<!--    <tr th:each="note : ${notes}">-->
-<!--        <td th:text="${note.id}">-->
-<!--        <td th:text="${#strings.listJoin(note.tagList, ', ')}">-->
-<!--        <td th:text="${note.title}">-->
-<!--        <td th:text="${note.text}">-->
-<!--        <td>-->
-<!--            <a th:href="@{'/deleteNote/{id}'(id=${note.id})}">delete</a>-->
-<!--        </td>-->
-<!--        <td>-->
-<!--            <a th:href="@{'/note/{id}'(id=${note.id})}">view</a>-->
-<!--        </td>-->
-<!--    </tr>-->
-<!--    <tr>-->
-<!--        <td>-->
-<!--            <a th:href="@{/login}">Login</a>-->
-<!--        </td>-->
-<!--        <td>-->
-<!--            <a th:href="@{/logout}" sec:authorize="isAuthenticated()">Logout</a>-->
-<!--        </td>-->
-<!--        <td>-->
-<!--            <a th:href="@{/admin}">Admin console</a>-->
-<!--        </td>-->
-<!--    </tr>-->
-<!--    </tbody>-->
-<!--</table>-->
 </body>
 </html>

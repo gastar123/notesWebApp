@@ -4,7 +4,6 @@ import com.xe72.notesWebApp.entities.Note;
 import com.xe72.notesWebApp.services.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -44,15 +43,15 @@ public class NoteController {
         }
     }
 
-    @PreAuthorize("hasPermission(#id, 'Note', 'delete')")
-    @GetMapping("/deleteNote/{id}")
+    @GetMapping("/note/{id}/delete")
     public String deleteNote(@PathVariable Long id) {
         noteService.deleteNote(id);
         return "redirect:/";
     }
 
     // TODO: Переделать на NotePermissionEvaluator
-    @PostAuthorize("authentication.principal instanceof T(com.xe72.notesWebApp.entities.User) and #model.getAttribute('note').user?.username == authentication.principal.username")
+//    @PostAuthorize("authentication.principal instanceof T(com.xe72.notesWebApp.entities.User) and #model.getAttribute('note').user?.username == authentication.principal.username")
+    @PostAuthorize("hasPermission(#model.getAttribute('note'), 'edit')")
     @GetMapping("/note/{id}/edit")
     public String editNote(Model model, @PathVariable Long id) {
         Note note = noteService.getNote(id);

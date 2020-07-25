@@ -7,12 +7,12 @@
 <body>
 
 <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">Notes</a>
+    <a class="navbar-brand mr-auto" href="/">Notes</a>
     <div>
-        <span class="mr-sm-2" sec:authentication="name">Unauthorized</span>
-        <a th:href="@{/admin}" class="mr-sm-2" sec:authorize="hasRole('ROLE_ADMIN')">Admin panel</a>
-        <a th:href="@{/login}" class="mr-sm-2" sec:authorize="!isAuthenticated()">Login</a>
-        <a th:href="@{/logout}" class="mr-sm-2" sec:authorize="isAuthenticated()">Logout</a>
+        <span class="mr-2" sec:authentication="name">Unauthorized</span>
+        <a th:href="@{/admin}" class="mr-2" sec:authorize="hasRole('ROLE_ADMIN')">Admin panel</a>
+        <a th:href="@{/login}" class="mr-2" sec:authorize="!isAuthenticated()">Login</a>
+        <a th:href="@{/logout}" class="mr-2" sec:authorize="isAuthenticated()">Logout</a>
     </div>
 </nav>
 
