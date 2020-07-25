@@ -27,6 +27,17 @@ public class Note {
     )
     private List<Tag> tagList;
 
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public List<Tag> getTagList() {
         return tagList;
     }
