@@ -6,13 +6,17 @@
 </head>
 <body>
 
-<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-light bg-light mb-3" style="position: sticky; right: 0; left: 0; top: 0; z-index: 9999;">
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-light bg-light mb-3" style="position: sticky; right: 0; left: 0; top: 0; z-index: 9999; flex-wrap: nowrap;">
     <a class="navbar-brand mr-auto" th:href="@{/}">Notes</a>
-    <div>
-        <span class="mr-2" sec:authentication="name">Unauthorized</span>
-        <a th:href="@{/admin}" class="mr-2" sec:authorize="hasRole('ROLE_ADMIN')">Admin panel</a>
-        <a th:href="@{/login}" class="mr-2" sec:authorize="!isAuthenticated()">Login</a>
-        <a th:href="@{/logout}" class="mr-2" sec:authorize="isAuthenticated()">Logout</a>
+    <form th:if="${needSearch}" class="input-group mx-5">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn my-0" type="submit">Search</button>
+    </form>
+    <div style="display:flex; white-space: nowrap;">
+        <span class="mr-3" sec:authentication="name">Unauthorized</span>
+        <a th:href="@{/admin}" class="mr-3" sec:authorize="hasRole('ROLE_ADMIN')">Admin panel</a>
+        <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Login</a>
+        <a th:href="@{/logout}" sec:authorize="isAuthenticated()">Logout</a>
     </div>
 </nav>
 

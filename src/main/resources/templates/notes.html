@@ -7,12 +7,9 @@
 </head>
 
 <body>
-<div th:replace="fragments/navbar :: navbar"></div>
+<div th:replace="fragments/navbar :: navbar(needSearch = true)"></div>
 <div class="container">
-    <form class="input-group my-2">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn my-2 my-sm-0" type="submit">Search</button>
-    </form>
+
     <h2>
         <a href="add">Add note</a>
     </h2>
