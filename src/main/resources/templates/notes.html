@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="fragments/head :: headFragment">
+<head>
+    <th:block th:replace="fragments/head :: headFragment"></th:block>
+    <th:block th:replace="fragments/head :: MDViewFragment"></th:block>
+    <th:block th:replace="fragments/head :: highlightFragment"></th:block>
 </head>
 
 <body>
@@ -15,8 +18,13 @@
     </h2>
     <div th:each="note : ${notes}" class="card mb-3">
         <a th:href="@{'/note/{id}'(id=${note.id})}" class="text-muted"><h5 th:text="${note.title}" class="card-header"></h5></a>
-        <div th:text="${note.text}" class="card-body"></div>
+        <div th:text="${note.text}" class="card-body pb-2"></div>
     </div>
 </div>
+
+<script>
+    Array.prototype.forEach.call(document.getElementsByClassName('card-body'), el => el.innerHTML = marked(el.innerHTML));
+    hljs.initHighlightingOnLoad();
+  </script>
 </body>
 </html>

@@ -1,13 +1,36 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="headFragment">
+
+<!-- Общий блок для всех страниц -->
+<th:block th:fragment="headFragment">
     <meta charset="UTF-8">
     <title>Notes</title>
 
+    <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-</head>
+</th:block>
+
+<!-- Просмотр markdown -->
+<th:block th:fragment="MDViewFragment">
+    <script th:src="@{/script/marked.min.js}"></script>
+</th:block>
+
+<!-- Редактор markdown -->
+<th:block th:fragment="MDEditFragment">
+    <link rel="stylesheet" th:href="@{/style/simplemde.min.css}">
+    <script th:src="@{/script/simplemde.min.js}"></script>
+</th:block>
+
+<!-- Подсветка синтаксиса в блоках кода -->
+<th:block th:fragment="highlightFragment">
+    <link rel="stylesheet" th:href="@{/style/hljs_default.min.css}">
+    <script th:src="@{/script/highlight.min.js}"></script>
+</th:block>
+
+
+
 <body>
 
 </body>

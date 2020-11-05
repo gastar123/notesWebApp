@@ -1,9 +1,14 @@
 package com.xe72.notesWebApp.services;
 
 import com.xe72.notesWebApp.entities.Note;
+import com.xe72.notesWebApp.entities.PagingNoteList;
 import com.xe72.notesWebApp.repositories.NoteRepository;
 import com.xe72.notesWebApp.security.UserProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -23,9 +28,18 @@ public class NoteService {
         return noteRepository.findAll();
     }
 
+    public PagingNoteList getPageableNotes(int page, int size) {
+        Sort sort = Sort.by("createDate").descending().and(Sort.by("id"));
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<Note> pg = noteRepository.findAll(pageable);
+        List<Note> noteList = noteRepository.findAll(pageable).getContent();
+        return new PagingNoteList(noteList, page + 1);
+    }
+
     // TODO: Обрабатывать EntityNotFoundException
     public Note getNote(Long id) {
-        return noteRepository.getOne(id);
+        return noteRepository.findById(id).get();
+//        return noteRepository.getOne(id);
     }
 
     // TODO: Обрабатывать EntityNotFoundException

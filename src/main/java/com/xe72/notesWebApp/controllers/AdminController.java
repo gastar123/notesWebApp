@@ -6,20 +6,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("admin")
 public class AdminController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping("/admin")
+    @GetMapping("")
     public String getAdminPage(Model model) {
         model.addAttribute("users", userService.allUsers());
         return "admin";
     }
 
-    @GetMapping("/admin/deleteUser/{id}")
+    @GetMapping("deleteUser/{id}")
     public String deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return "redirect:/admin";

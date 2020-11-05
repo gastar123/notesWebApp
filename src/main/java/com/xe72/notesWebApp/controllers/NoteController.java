@@ -50,6 +50,7 @@ public class NoteController {
     }
 
     // TODO: Переделать на NotePermissionEvaluator
+    // И вообще нужна ли тут проверка? Кнопка "Редактировать" будет заблочена на клиенте, и в любом случае сохранить чужую заметку не получится
 //    @PostAuthorize("authentication.principal instanceof T(com.xe72.notesWebApp.entities.User) and #model.getAttribute('note').user?.username == authentication.principal.username")
     @PostAuthorize("hasPermission(#model.getAttribute('note'), 'edit')")
     @GetMapping("/note/{id}/edit")

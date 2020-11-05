@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="fragments/head :: headFragment">
+<head>
+    <th:block th:replace="fragments/head :: headFragment"></th:block>
+    <th:block th:replace="fragments/head :: MDViewFragment"></th:block>
+    <th:block th:replace="fragments/head :: highlightFragment"></th:block>
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
@@ -14,5 +17,10 @@
         </div>
     </div>
 </div>
+
+<script>
+    Array.prototype.forEach.call(document.getElementsByClassName('card-body'), el => el.innerHTML = marked(el.innerHTML));
+    hljs.initHighlightingOnLoad();
+  </script>
 </body>
 </html>

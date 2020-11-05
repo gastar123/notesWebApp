@@ -1,40 +1,50 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:include="fragments/head :: headFragment">
+<head>
+    <th:block th:replace="fragments/head :: headFragment"></th:block>
+    <th:block th:replace="fragments/head :: MDEditFragment"></th:block>
+    <th:block th:replace="fragments/head :: highlightFragment"></th:block>
+
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
 <div class="container">
     <h5 class="mb-3">Add note</h5>
-<form action="#" th:action="@{/add}" th:object="${note}" method="post" class="needs-validation" novalidate>
-    <div class="form-group">
-        <label>Tags</label>
-        <input type="text" name="tag" class="form-control"
-                  th:classappend="${#fields.hasErrors('tagList')}? 'is-invalid'" th:field="*{tagList}">
-        <div class="invalid-feedback" th:if="${#fields.hasErrors('tagList')}" th:errors="*{tagList}">
-            Error tags field
+    <form action="#" th:action="@{/add}" th:object="${note}" method="post" class="needs-validation" novalidate>
+        <div class="form-group">
+            <label>Tags</label>
+            <input type="text" name="tag" class="form-control"
+                   th:classappend="${#fields.hasErrors('tagList')}? 'is-invalid'" th:field="*{tagList}">
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('tagList')}" th:errors="*{tagList}">
+                Error tags field
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label>Title</label>
-        <input type="text" name="title" class="form-control"
-                  th:classappend="${#fields.hasErrors('title')}? 'is-invalid'" th:field="*{title}">
-        <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">
-            Error title field
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" name="title" class="form-control"
+                   th:classappend="${#fields.hasErrors('title')}? 'is-invalid'" th:field="*{title}">
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">
+                Error title field
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label>Text</label>
-        <textarea name="text" class="form-control"
-                  th:classappend="${#fields.hasErrors('text')}? 'is-invalid'" th:field="*{text}"></textarea>
-        <div class="invalid-feedback" th:if="${#fields.hasErrors('text')}" th:errors="*{text}">
-            Error text field
+        <div class="form-group">
+            <label>Text</label>
+            <textarea id="editor" name="text" class="form-control"
+                      th:classappend="${#fields.hasErrors('text')}? 'is-invalid'" th:field="*{text}"></textarea>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('text')}" th:errors="*{text}">
+                Error text field
+            </div>
         </div>
-    </div>
-    <p><input type="submit" class="btn btn-primary"></p>
-    <p><input type="hidden" name="id" th:field="*{id}"></p>
-</form>
-<a href="/">back</a>
+        <p><input type="submit" class="btn btn-primary"></p>
+        <p><input type="hidden" name="id" th:field="*{id}"></p>
+    </form>
+    <a href="/">back</a>
 </div>
+
+<script>
+    var simplemde = new SimpleMDE({
+        element: document.getElementById("editor"),
+        renderingConfig: {codeSyntaxHighlighting: true} });
+</script>
 </body>
 </html>

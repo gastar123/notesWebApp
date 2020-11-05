@@ -2,8 +2,9 @@ package com.xe72.notesWebApp.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "notes")
@@ -13,6 +14,7 @@ public class Note {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
+    @Size(max = 32000)
     @NotEmpty(message = "OSHIBKA")
     private String text;
     @Column(name = "create_date")
@@ -25,7 +27,7 @@ public class Note {
             joinColumns = {@JoinColumn(name = "note_id")},
             inverseJoinColumns = {@JoinColumn(name = "tag_name")}
     )
-    private List<Tag> tagList;
+    private Set<Tag> tagList;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     private User user;
@@ -38,11 +40,11 @@ public class Note {
         this.user = user;
     }
 
-    public List<Tag> getTagList() {
+    public Set<Tag> getTagList() {
         return tagList;
     }
 
-    public void setTagList(List<Tag> tagList) {
+    public void setTagList(Set<Tag> tagList) {
         this.tagList = tagList;
     }
 
