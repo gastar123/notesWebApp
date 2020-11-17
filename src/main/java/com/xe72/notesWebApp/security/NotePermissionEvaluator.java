@@ -6,6 +6,7 @@ import com.xe72.notesWebApp.repositories.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
@@ -19,7 +20,7 @@ public class NotePermissionEvaluator implements PermissionEvaluator {
 
     @Override
     public boolean hasPermission(Authentication authentication, Object obj, Object permission) {
-        if (authentication.getPrincipal() instanceof User) {
+        if (authentication.getPrincipal() instanceof UserDetails) {
             if (obj instanceof Note) {
                 return checkNote((User) authentication.getPrincipal(), (Note) obj, String.valueOf(permission));
             }
@@ -29,7 +30,7 @@ public class NotePermissionEvaluator implements PermissionEvaluator {
 
     @Override
     public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
-        if (authentication.getPrincipal() instanceof User && (targetId == null || targetId instanceof Number) && targetType.toLowerCase().contains("note")) {
+        if (authentication.getPrincipal() instanceof UserDetails && (targetId == null || targetId instanceof Number) && targetType.toLowerCase().contains("note")) {
             if (StringUtils.isEmpty(targetId) && permission.toString().equals("edit")) {
                 return true;
             }
