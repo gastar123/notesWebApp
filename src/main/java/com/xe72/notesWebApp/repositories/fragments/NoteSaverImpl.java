@@ -13,11 +13,11 @@ public class NoteSaverImpl implements NoteSaver<Note> {
 
     @Override
     public <S extends Note> S save(S entity) {
-        entity.getTagList().stream().forEach(it -> {
+        entity.getTagList().forEach(it -> {
             // Обращаемся напрямую к реализации (hibernate). Класс Session
             em.unwrap(Session.class).saveOrUpdate(it);
         });
-        em.persist(entity);
+        em.unwrap(Session.class).saveOrUpdate(entity);
         return entity;
     }
 
