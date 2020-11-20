@@ -51,7 +51,7 @@ public class NoteService {
             note.setCreateDate(new Date());
             note.setUser(userProvider.getCurrentUser().orElseThrow(() -> new RuntimeException("Not authorized")));
         } else {
-            newNote = noteRepository.getOne(note.getId());
+            newNote = noteRepository.findById(note.getId()).get();
             newNote.setTitle(note.getTitle());
             newNote.setText(note.getText());
             newNote.setTagList(note.getTagList());

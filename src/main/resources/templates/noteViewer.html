@@ -19,8 +19,9 @@
 </div>
 
 <script>
-    Array.prototype.forEach.call(document.getElementsByClassName('card-body'), el => el.innerHTML = marked(el.innerHTML));
-    hljs.initHighlightingOnLoad();
+    Array.prototype.forEach.call(document.getElementsByClassName('card-body'), el =>
+        el.innerHTML = DOMPurify.sanitize(marked(el.innerHTML.replaceAll("&lt;", "<").replaceAll("&gt;", ">"))));
+    //hljs.initHighlightingOnLoad();
   </script>
 </body>
 </html>
