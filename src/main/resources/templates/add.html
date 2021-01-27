@@ -14,8 +14,8 @@
         <div class="form-group">
             <label>Tags</label>
             <input type="text" name="tag" class="form-control"
-                   th:classappend="${#fields.hasErrors('tagList')}? 'is-invalid'" th:field="*{tagList}">
-            <div class="invalid-feedback" th:if="${#fields.hasErrors('tagList')}" th:errors="*{tagList}">
+                   th:classappend="${#fields.hasErrors('tags')}? 'is-invalid'" th:field="*{tags}">
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('tags')}" th:errors="*{tags}">
                 Error tags field
             </div>
         </div>

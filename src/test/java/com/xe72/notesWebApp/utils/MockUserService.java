@@ -1,9 +1,10 @@
 package com.xe72.notesWebApp.utils;
 
-import com.xe72.notesWebApp.entities.Role;
-import com.xe72.notesWebApp.entities.User;
-import com.xe72.notesWebApp.repositories.RoleRepository;
-import com.xe72.notesWebApp.services.UserService;
+import com.xe72.notesWebApp.dto.model.RoleDto;
+import com.xe72.notesWebApp.dto.model.UserDto;
+import com.xe72.notesWebApp.entity.Role;
+import com.xe72.notesWebApp.repository.RoleRepository;
+import com.xe72.notesWebApp.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,20 +24,21 @@ public class MockUserService implements UserDetailsService {
     RoleRepository roleRepository;
 
     @Override
-    public User loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = new User();
+    public UserDto loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserDto user = new UserDto();
         user.setUsername("mockUser");
         user.setPassword("pass");
-        user.setRoles(new HashSet<Role>() {{
+        user.setRoles(new HashSet<RoleDto>() {{
             add(createRoleAndGet("USER"));
         }});
         userService.saveUser(user);
         return user;
     }
 
-    public Role createRoleAndGet(String roleName) {
-        Role role = new Role(1L, roleName);
-        roleRepository.save(role);
-        return role;
+    public RoleDto createRoleAndGet(String roleName) {
+//        Role role = new Role(1L, roleName);
+        Role role = roleRepository.save(new Role(1L, roleName));
+        RoleDto roleDto = new RoleDto(role.getId(), role.getName());
+        return roleDto;
     }
 }

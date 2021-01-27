@@ -1,6 +1,6 @@
 package com.xe72.notesWebApp.config;
 
-import com.xe72.notesWebApp.entities.Tag;
+import com.xe72.notesWebApp.entity.Tag;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.format.Printer;

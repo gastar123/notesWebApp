@@ -1,8 +1,8 @@
 package com.xe72.notesWebApp.security;
 
-import com.xe72.notesWebApp.entities.Note;
-import com.xe72.notesWebApp.entities.User;
-import com.xe72.notesWebApp.repositories.NoteRepository;
+import com.xe72.notesWebApp.entity.Note;
+import com.xe72.notesWebApp.entity.User;
+import com.xe72.notesWebApp.repository.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
