@@ -1,7 +1,7 @@
 package com.xe72.notesWebApp.service;
 
-import com.xe72.notesWebApp.dto.model.NoteDto;
-import com.xe72.notesWebApp.dto.model.TagDto;
+import com.xe72.notesWebApp.entity.Note;
+import com.xe72.notesWebApp.entity.Tag;
 import com.xe72.notesWebApp.service.note.NoteService;
 import com.xe72.notesWebApp.utils.DatabaseCleanup;
 import com.xe72.notesWebApp.utils.MockUserService;
@@ -50,34 +50,34 @@ public class NoteServiceTests {
     @WithUserDetails()
     public void testNewAndExistingTags() {
         Assertions.assertTrue(noteService.getAllNotes().isEmpty(), "Notes table not empty");
-        NoteDto firstNote = new NoteDto();
+        Note firstNote = new Note();
         firstNote.setTitle("First title");
         firstNote.setText("First text");
-        Set<TagDto> firstTagList = new HashSet<>();
-        firstTagList.add(new TagDto("tag1"));
-        firstTagList.add(new TagDto("tag2"));
+        Set<Tag> firstTagList = new HashSet<>();
+        firstTagList.add(new Tag("tag1"));
+        firstTagList.add(new Tag("tag2"));
         firstNote.setTags(firstTagList);
         noteService.addNote(firstNote);
 
         logger.info("FirstNoteSaved");
 
-        NoteDto secondNote = new NoteDto();
+        Note secondNote = new Note();
         secondNote.setTitle("First title");
         secondNote.setText("First text");
-        Set<TagDto> secondTagList = new HashSet<>();
-        secondTagList.add(new TagDto("tag1"));
-        secondTagList.add(new TagDto("tag3"));
+        Set<Tag> secondTagList = new HashSet<>();
+        secondTagList.add(new Tag("tag1"));
+        secondTagList.add(new Tag("tag3"));
         secondNote.setTags(secondTagList);
         noteService.addNote(secondNote);
 
         // Проверка что всё сохранилось
-        List<TagDto> savedTags = noteService.getAllNotes()
+        List<Tag> savedTags = noteService.getAllNotes()
                 .stream()
                 .flatMap(note -> note.getTags().stream())
                 .collect(Collectors.toList());
         Assertions.assertEquals(4, savedTags.size());
         Set<String> allTagNames = Stream.concat(firstTagList.stream(), secondTagList.stream())
-                .map(TagDto::getName)
+                .map(Tag::getName)
                 .collect(Collectors.toSet());
         Assertions.assertTrue(savedTags.stream().allMatch(tag -> allTagNames.contains(tag.getName())));
     }
@@ -89,29 +89,29 @@ public class NoteServiceTests {
         String oldText = "Old text.";
         String newText = "New text.";
 
-        NoteDto firstNote = new NoteDto();
+        Note firstNote = new Note();
         firstNote.setTitle("First title");
         firstNote.setText(oldText);
-        Set<TagDto> firstTagList = new HashSet<>();
-        firstTagList.add(new TagDto("tag1"));
-        firstTagList.add(new TagDto("tag2"));
+        Set<Tag> firstTagList = new HashSet<>();
+        firstTagList.add(new Tag("tag1"));
+        firstTagList.add(new Tag("tag2"));
         firstNote.setTags(firstTagList);
         noteService.addNote(firstNote);
 
-        NoteDto oldNote = noteService.getAllNotes().get(0);
+        Note oldNote = noteService.getAllNotes().get(0);
         Assertions.assertEquals(1, oldNote.getVersion());
         Long noteId = oldNote.getId();
-        NoteDto newNote = new NoteDto();
+        Note newNote = new Note();
         newNote.setId(noteId);
         newNote.setTitle("First title");
         newNote.setText(newText);
-        Set<TagDto> newTagList = new HashSet<>();
-        newTagList.add(new TagDto("tag1"));
-        newTagList.add(new TagDto("tag2"));
+        Set<Tag> newTagList = new HashSet<>();
+        newTagList.add(new Tag("tag1"));
+        newTagList.add(new Tag("tag2"));
         newNote.setTags(newTagList);
         noteService.addNote(newNote);
 
-        List<NoteDto> allNotes = noteService.getAllNotes();
+        List<Note> allNotes = noteService.getAllNotes();
         Assertions.assertEquals(1, allNotes.size());
         Assertions.assertEquals(newText, allNotes.get(0).getText());
         Assertions.assertEquals(2, allNotes.get(0).getVersion());

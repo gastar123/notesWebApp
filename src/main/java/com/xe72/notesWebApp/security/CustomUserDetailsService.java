@@ -1,6 +1,6 @@
 package com.xe72.notesWebApp.security;
 
-import com.xe72.notesWebApp.dto.model.UserDto;
+import com.xe72.notesWebApp.entity.User;
 import com.xe72.notesWebApp.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +16,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDto user = userService.findUserByName(username);
+        User user = userService.findUserByName(username);
 
         if (user == null) {
             throw new UsernameNotFoundException("User " + username + " not found");

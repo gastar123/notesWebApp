@@ -16,8 +16,11 @@
     <div th:each="note : ${notes}" class="card mb-3">
         <a th:href="@{'/note/{id}'(id=${note.id})}" class="text-muted"><h5 th:text="${note.title}" class="card-header"></h5></a>
         <div th:text="${note.text}" class="card-body pb-2"></div>
-        <div class="card-footer">
-            <a th:each="tag : ${note.tags}" href="#" class="badge badge-secondary mr-1" th:text="${tag.name}"></a>
+        <div class="card-footer" style="display:flex">
+            <div class="tags mr-auto">
+                <a th:each="tag : ${note.tags}" href="#" class="badge badge-secondary mr-1" th:text="${tag.name}"></a>
+            </div>
+            <div th:text="${note.user}"></div>
         </div>
     </div>
 </div>

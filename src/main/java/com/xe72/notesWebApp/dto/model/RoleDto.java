@@ -1,8 +1,6 @@
 package com.xe72.notesWebApp.dto.model;
 
-import org.springframework.security.core.GrantedAuthority;
-
-public class RoleDto implements GrantedAuthority {
+public class RoleDto {
 
     private Long id;
     private String name;
@@ -29,10 +27,5 @@ public class RoleDto implements GrantedAuthority {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public String getAuthority() {
-        return getName();
     }
 }

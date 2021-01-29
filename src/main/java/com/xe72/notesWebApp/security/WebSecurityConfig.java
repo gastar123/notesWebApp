@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 
@@ -30,7 +31,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
                 //Доступ только для не зарегистрированных пользователей
-                .antMatchers("/registration").not().fullyAuthenticated()
+                .antMatchers("/registration").not().authenticated()
+//                .antMatchers("/login").not().authenticated()
                 //Доступ только для пользователей с ролью Администратор
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/news").hasRole("USER")
@@ -41,16 +43,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/add").authenticated()
                 .and()
                 //Настройка для входа в систему
-                .formLogin()
-                .loginPage("/login")
-                //Перенарпавление на главную страницу после успешного входа
-                .defaultSuccessUrl("/")
-                .permitAll()
-                .and()
-                .logout()
-                .permitAll()
-                .logoutSuccessUrl("/")
-                .and().rememberMe().rememberMeServices(getTokenBasedRememberMeServices());
+                .formLogin().loginPage("/login").defaultSuccessUrl("/")
+                .and().logout().permitAll().logoutSuccessUrl("/")
+                .and().rememberMe().rememberMeServices(getTokenBasedRememberMeServices())
+                .and().exceptionHandling().accessDeniedHandler(new AccessDeniedHandlerImpl());
     }
 
     // Не используется стандартный configure из WebSecurityConfigurerAdapter. Это равнозначно?
@@ -63,7 +59,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public AbstractRememberMeServices getTokenBasedRememberMeServices() {
         TokenBasedRememberMeServices rms = new TokenBasedRememberMeServices("MySecretNotesKey123",
                 customUserDetailsService);
-//        rms.setCookieName("custom_cookie_name");
         rms.setAlwaysRemember(true);
         return rms;
     }

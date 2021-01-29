@@ -1,7 +1,9 @@
 package com.xe72.notesWebApp.controller.note;
 
+import com.xe72.notesWebApp.dto.mapper.NoteMapper;
 import com.xe72.notesWebApp.dto.model.NoteDto;
 import com.xe72.notesWebApp.dto.model.TagDto;
+import com.xe72.notesWebApp.entity.Note;
 import com.xe72.notesWebApp.service.note.NoteService;
 import com.xe72.notesWebApp.service.note.TagService;
 import org.slf4j.Logger;
@@ -34,6 +36,9 @@ public class NoteRestController {
     @Autowired
     private RememberMeServices rememberMeServices;
 
+    @Autowired
+    private NoteMapper noteMapper;
+
 //    @GetMapping("notes")
 //    public PagingNoteList getNoteList(@RequestParam int page, @RequestParam int limit) {
 //        return noteService.getPageableNotes(page, limit);
@@ -41,22 +46,28 @@ public class NoteRestController {
 
     @GetMapping("notes")
     public List<NoteDto> getNotesByVersion(@RequestParam("version") Long version) {
-        return noteService.getNotesByVersion(version);
+        List<NoteDto> notes = noteService.getNotesByVersion(version).stream().map(noteMapper::toNoteDto)
+                                         .collect(Collectors.toList());
+        return notes;
     }
 
     @GetMapping("tags")
     public List<TagDto> getTagList() {
-        return tagService.getTags();
+        List<TagDto> tags = tagService.getTags().stream().map(it -> new TagDto(it.getName()))
+                                      .collect(Collectors.toList());
+        return tags;
     }
 
     @PostMapping("notes")
-    public Long addNote(@RequestBody NoteDto note) {
+    public Long addNote(@RequestBody NoteDto noteDto) {
+        Note note = noteMapper.toNoteEntity(noteDto);
         return noteService.addNote(note).getId();
     }
 
     @PostMapping("notesBatch")
     public List<Long> addNotesBatch(@RequestBody List<NoteDto> notes) {
-        return noteService.addNotesBatch(notes).stream().map(NoteDto::getId).collect(Collectors.toList());
+        List<Note> noteEntities = notes.stream().map(noteMapper::toNoteEntity).collect(Collectors.toList());
+        return noteService.addNotesBatch(noteEntities).stream().map(Note::getId).collect(Collectors.toList());
     }
 
     @DeleteMapping("notes")
@@ -64,9 +75,12 @@ public class NoteRestController {
         noteService.deleteNotes(noteIds);
     }
 
-    // Перенести логику в сервис?
+    // Перенести логику в сервис? Перенести в отдельный контроллер?
     @PostMapping("login")
-    public ResponseEntity<String> login(@RequestParam("login") String login, @RequestParam("password") String password, HttpServletRequest req, HttpServletResponse resp) {
+    public ResponseEntity<String> login(@RequestParam("login") String login,
+                                        @RequestParam("password") String password,
+                                        HttpServletRequest req,
+                                        HttpServletResponse resp) {
         try {
             req.login(login, password);
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();

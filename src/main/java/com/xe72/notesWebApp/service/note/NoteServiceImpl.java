@@ -1,8 +1,5 @@
 package com.xe72.notesWebApp.service.note;
 
-import com.xe72.notesWebApp.dto.mapper.NoteMapper;
-import com.xe72.notesWebApp.dto.mapper.UserMapper;
-import com.xe72.notesWebApp.dto.model.NoteDto;
 import com.xe72.notesWebApp.entity.Note;
 import com.xe72.notesWebApp.entity.Tag;
 import com.xe72.notesWebApp.repository.NoteRepository;
@@ -23,12 +20,6 @@ import java.util.stream.Collectors;
 public class NoteServiceImpl implements NoteService {
 
     @Autowired
-    private NoteMapper noteMapper;
-
-    @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
     private NoteRepository noteRepository;
 
     @Autowired
@@ -38,8 +29,8 @@ public class NoteServiceImpl implements NoteService {
     UserService userService;
 
     @Override
-    public List<NoteDto> getAllNotes() {
-        return noteRepository.findAll().stream().map(noteMapper::toNoteDto).collect(Collectors.toList());
+    public List<Note> getAllNotes() {
+        return noteRepository.findAll();
     }
 
 //    public PagingNoteList getPageableNotes(int page, int size) {
@@ -51,15 +42,14 @@ public class NoteServiceImpl implements NoteService {
 //    }
 
     @Override
-    public List<NoteDto> getNotesByVersion(Long version) {
-        return noteRepository.findByVersionGreaterThan(version).stream().map(noteMapper::toNoteDto)
-                             .collect(Collectors.toList());
+    public List<Note> getNotesByVersion(Long version) {
+        return noteRepository.findByVersionGreaterThan(version);
     }
 
     // TODO: Обрабатывать EntityNotFoundException
     @Override
-    public NoteDto getNote(Long id) {
-        return noteMapper.toNoteDto(noteRepository.findById(id).get());
+    public Note getNote(Long id) {
+        return noteRepository.findById(id).get();
 //        return noteRepository.getOne(id);
     }
 
@@ -67,41 +57,27 @@ public class NoteServiceImpl implements NoteService {
 //    @PreAuthorize("hasPermission(#note.id, 'note', 'edit')")
     @Override
     @Transactional
-    public NoteDto addNote(NoteDto note) {
-//        Note newNote;
-//        if (note.getId() == null) {
-//            newNote = note;
-//            note.setCreateDate(new Date());
-//            note.setUser(userProvider.getCurrentUser().orElseThrow(() -> new RuntimeException("Not authorized")));
-//        } else {
-//            newNote = noteRepository.findById(note.getId()).get();
-//            newNote.setTitle(note.getTitle());
-//            newNote.setText(note.getText());
-//            newNote.setTagList(note.getTagList());
-//            newNote.setModifyDate(new Date());
-//        }
-//        Note newNote = prepareNoteForSave(note);
-        return noteMapper.toNoteDto(noteRepository.save(prepareNoteForSave(note)));
+    public Note addNote(Note note) {
+        return noteRepository.save(prepareNoteForSave(note));
     }
 
     // TODO: Проверить что Transactional работает как надо, и теги в случае ошибки не сохранятся
     @Override
     @Transactional
-    public List<NoteDto> addNotesBatch(List<NoteDto> notes) {
-        return notes.stream().map(n -> noteMapper.toNoteDto(noteRepository.save(prepareNoteForSave(n))))
-                    .collect(Collectors.toList());
+    public List<Note> addNotesBatch(List<Note> notes) {
+        return notes.stream().map(n -> noteRepository.save(prepareNoteForSave(n))).collect(Collectors.toList());
     }
 
     // Дичь конечно. Разобраться как сделать для списка по нормальному, а не по одному элементу
     // Кастомные методы для проверки прав https://www.baeldung.com/spring-security-create-new-custom-security-expression
     // TODO: Проверка прав вообще работает? На приватном методе
     @PreAuthorize("hasPermission(#note.id, 'note', 'edit')")
-    private Note prepareNoteForSave(NoteDto note) {
+    private Note prepareNoteForSave(Note note) {
         Note newNote;
         if (note.getId() == null) {
-            newNote = noteMapper.toNoteEntity(note);
+            newNote = note;
             newNote.setCreateDate(new Date());
-            newNote.setUser(userMapper.toUserEntity(userService.getCurrentUser().orElseThrow(() -> new RuntimeException("Not authorized"))));
+            newNote.setUser(userService.getCurrentUser().orElseThrow(() -> new RuntimeException("Not authorized")));
         } else {
             // TODO: Может наоборот? В новую заметку дату создания и юзера прописать?
             newNote = noteRepository.findById(note.getId()).get();
